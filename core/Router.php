@@ -6,7 +6,12 @@
 
 class Router {
 	
-	protected $routes = [];
+	protected $routes = [
+		'GET' => [],
+		'POST' => [],
+		'PUT' => [],
+		'DELETE' => []
+	];
 		
 	/**
 	 * A method for binding a specific request to the given path.
@@ -14,7 +19,7 @@ class Router {
 	 * @param  String
 	 * @param  String
 	 */
-	public function define($request, $path) {
+	public function define($request, $path, $method = 'GET') {
 		if (!is_string($request)) {
 			throw new InvalidArgumentException('request is not a string: ' . $request);
 		}
@@ -22,7 +27,7 @@ class Router {
 			throw new InvalidArgumentException('path is not a string: ' . $path);
 		}
 		
-		$this->routes[$request] = $path;
+		$this->routes[$method][$request] = $path;
 	}
 	
 	/**
@@ -30,9 +35,9 @@ class Router {
 	 * 
 	 * @param associative array
 	 */
-	public function defineMany($routes) {
+	public function defineMany($routes, $method = 'GET') {
 		foreach ($routes as $request => $path) {
-			$this->define($request, $path);
+			$this->define($request, $path, $method);
 		}
 	}
 	
@@ -42,8 +47,8 @@ class Router {
 	 * @param String
 	 * @return whether the url is binded to a path.
 	 */
-	public function has($request) {
-		return array_key_exists($request, $this->routes);
+	public function has($request, $method = 'GET') {
+		return array_key_exists($request, $this->routes[$method]);
 	}
 	
 	/**
@@ -51,8 +56,8 @@ class Router {
 	 * 
 	 * @return path binded to request.
 	 */
-	public function get($request) {
-		return $this->routes[$request];
+	public function get($request, $method = 'GET') {
+		return $this->routes[$method][$request];
 	}
 	
 }

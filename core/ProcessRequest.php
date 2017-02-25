@@ -15,13 +15,13 @@ class ProcessRequest {
 	 */
 	public static function handle(Request $request, Router $routes) {
 		$action = $request->getAction();
-		$route_exists = $routes->has($action);
+		$route_exists = $routes->has($action, $request->getMethod());
 		
 		// Handles maintenance
 		if (under_maintenance()) {
 			$maintenance = get_special_path('maintenance');
 			if ($maintenance !== $action) {
-				$action = $maintenance;
+				die (ProcessRequest::handle(new Request($maintenance, Request::$get), $routes));
 			}
 		} else {
 			if ($action === get_special_path('maintenance')) {
@@ -31,21 +31,23 @@ class ProcessRequest {
 		
 		// Handles request
 		if ($route_exists) {
-			$controller_name = explode('@', $routes->get($action))[0];
-			$method_name = explode('@', $routes->get($action))[1];
+			$controller_name = explode('@', $routes->get($action, $request->getMethod()))[0];
+			$method_name = explode('@', $routes->get($action, $request->getMethod()))[1];
 			
 			ProcessRequest::direct($controller_name, $method_name);
 		} else {
 			$notfound = get_special_path('404');
-			die(ProcessRequest::handle(new Request($notfound, $request->getMethod()), $routes));
+			die(ProcessRequest::handle(new Request($notfound, Request::$get), $routes));
 		}
 	}
 	
 	protected static function direct($controller_name, $method_name) {
 		if (($controller = ProcessRequest::getController($controller_name)) !== null) {
-			$method = $controller->$method_name();
-			if (function_exists($method) && is_callable($method)) {
-				die($method());
+			
+			if (method_exists($controller, $method_name)) {
+				die($controller->$method_name());
+			} else {
+				die ('Could not find method ' . $method_name . ' in Controller ' . $controller_name);
 			}
 		} else {
 			die ('could not find controller: ' . $controller_name);

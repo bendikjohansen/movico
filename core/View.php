@@ -7,32 +7,24 @@
 class View {
 	
 	/**
-	 * A simple GET method. Passes given data into the file.
+	 * Gets the given file, and passes along some data to the view.
 	 *
 	 * @param String
 	 * @param associative array
 	 */
-	public static function GET($filename, $data = null) {
-		if (request_method() !== Request::$get) {
-			throw new InvalidArgumentException('Request method expected to be GET: ' . request_method());
+	public static function get($filename, $data) {
+		if (is_null($data)) {
+			$data = [];
 		}
-		
-		if ($data !== null) {
-			if (is_array($data)) {
-				foreach ($data as $key => $value) {
-					$$key = $value;
-				}
+		if (request_method() === Request::$post) {
+			$data = array_merge($_POST, $data);
+		}
+		if (is_array($data)) {
+			foreach ($data as $key => $value) {
+				$$key = $value;
 			}
 		}
 		
 		return require _public('views/' . $filename . '.view.php');
-	}
-	
-	public static function POST($filename, $data = null) {
-		if (request_method() !== Request::$post) {
-			throw new InvalidArgumentException('Request method expected to be GET: ' . request_method());
-		}
-		
-		return require _public('views/' . $filename . '.view.php');	
 	}
 }
