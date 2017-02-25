@@ -4,4 +4,4 @@
  * The entry point of the whole project.
  */
 
-require 'core/bootstrap.php';
+require __DIR__ . '/../core/bootstrap.php';

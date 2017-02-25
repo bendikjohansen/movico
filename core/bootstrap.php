@@ -6,12 +6,14 @@
 */
 
 global $config;
-$config = require 'core/config.php';
+$config = require 'config.php';
 
-require 'core/Router.php';
-require 'routes.php';
+require 'helpers.php';
 
-require 'core/View.php';
-require 'core/Controller.php';
+require 'Router.php';
+require '../routes.php';
 
-require 'core/process_request.php';
+require 'View.php';
+require 'Controller.php';
+
+require 'process_request.php';

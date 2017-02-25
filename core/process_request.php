@@ -5,7 +5,7 @@
  * to the controller and calls the given method.
  */
 
-$request = $_SERVER['REQUEST_URI'];
+$request = uri();
 
 if ($routes->has($request)) {
 	$controller_name = explode('@', $routes->get($request))[0];
@@ -23,6 +23,8 @@ if ($routes->has($request)) {
 				$method();
 			}
 		}
+	} else {
+		die ('could not find controller: ' . $controller_name);
 	}
 } else {
 	header('Location: ' . $config['special routes']['404']);
