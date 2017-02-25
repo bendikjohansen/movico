@@ -14,13 +14,13 @@ class Router {
 	 * 
 	 * @param associative array
 	 */
-	public function define($routes) {
+	public function defineMany($routes) {
 		foreach ($routes as $request => $path) {
 			$this->validateRequest($request);
 			$this->validatePath($path);
 		}
 		
-		$this->routes = $routes;
+		$this->routes = array_merge($this->routes, $routes);
 	}
 	
 	/**
@@ -29,7 +29,7 @@ class Router {
 	 * @param  String
 	 * @param  String
 	 */
-	public function bind($request, $path) {
+	public function define($request, $path) {
 		$this->validateRequest($request);
 		$this->validatePath($path);
 		
