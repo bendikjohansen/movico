@@ -1,0 +1,29 @@
+html, body {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #ddd;
+	-webkit-user-select: none;
+			user-select: none;
+}
+
+.title {
+	font-family: 'HelveticaNeue-Thin';
+	color: #444;
+	font-weight: 300;
+	font-size: 72px;
+	letter-spacing: 0.3em;
+	-webkit-animation: stretch 2s;
+			animation: stretch 2s;
+}
+
+@-webkit-keyframes stretch {
+	0% { letter-spacing: 0.1em; }
+	100% { letter-spacing: 0.3em }
+}
+
+@keyframes stretch {
+	0% { letter-spacing: 0.1em; }
+	100% { letter-spacing: 0.3em; }
+}

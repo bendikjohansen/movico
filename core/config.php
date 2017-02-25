@@ -8,6 +8,7 @@ return [
 	
 	'directory paths' => [
 		'controllers' => 'controllers/',
+		'views' => 'public/views/'
 	],
 	
 	'special routes' => [

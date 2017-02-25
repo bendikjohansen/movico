@@ -25,5 +25,5 @@ if ($routes->has($request)) {
 		}
 	}
 } else {
-	header('Location: /404');
+	header('Location: ' . $config['special routes']['404']);
 }

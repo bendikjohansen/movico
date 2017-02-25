@@ -3,11 +3,11 @@
 class HomeController extends Controller {
 	
 	public function home() {
-		echo 'hi';
+		return View::get('home', ['title' => 'EasyMVC']);
 	}
 	
 	public function notFound() {
-		echo '404: not found';
+		return View::get('404');
 	}
 	
 	public function maintenance() {
