@@ -2,15 +2,34 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title><?= $data['title'] ?></title>
+	<title><?= $title ?></title>
 	
-	<link rel="stylesheet" href="public/css/style.css">
+	<style>
+		html, body {
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #ddd;
+			-webkit-user-select: none;
+					user-select: none;
+		}
+
+		.title {
+			font-family: 'HelveticaNeue-Thin';
+			color: #444;
+			font-weight: 300;
+			font-size: 72px;
+			letter-spacing: 0.2em;
+			cursor: default;
+		}
+	</style>
 </head>
 <body>
 	
 	<main class="center">
 		<h1 class="title">
-			<?= $data['title'] ?>
+			<?= $title ?>
 		</h1>
 	</main>
 	

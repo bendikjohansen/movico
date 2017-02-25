@@ -8,10 +8,14 @@ return [
 	
 	'directory paths' => [
 		'controllers' => __DIR__ . '/../controllers/',
-		'views' => __DIR__ . '/../public/views/'
+		'public' => __DIR__ . '/../public/'
 	],
 	
-	'special routes' => [
+	'maintenance' => [
+		'active' => false
+	],
+	
+	'special paths' => [
 		'404' => '/404',
 		'maintenance' => '/maintenance'
 	]

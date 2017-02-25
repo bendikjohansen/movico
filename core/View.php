@@ -13,8 +13,26 @@ class View {
 	 * @param associative array
 	 */
 	public static function GET($filename, $data = null) {
-		global $config;
-		return require $config['directory paths']['views'] . $filename . '.view.php';
+		if (request_method() !== Request::$get) {
+			throw new InvalidArgumentException('Request method expected to be GET: ' . request_method());
+		}
+		
+		if ($data !== null) {
+			if (is_array($data)) {
+				foreach ($data as $key => $value) {
+					$$key = $value;
+				}
+			}
+		}
+		
+		return require _public('views/' . $filename . '.view.php');
 	}
 	
+	public static function POST($filename, $data = null) {
+		if (request_method() !== Request::$post) {
+			throw new InvalidArgumentException('Request method expected to be GET: ' . request_method());
+		}
+		
+		return require _public('views/' . $filename . '.view.php');	
+	}
 }
