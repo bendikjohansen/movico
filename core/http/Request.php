@@ -1,15 +1,15 @@
 <?php
 
 /**
- * The Request class handles the uri, as well as any validation of it.
+ * The Request class represents a request in the HTTP layer.
  */
 
 class Request {
 	
-	public static $get = 'GET';
-	public static $post = 'POST';
-	public static $put = 'PUT';
-	public static $delete = 'DELETE';
+	public const GET = 'GET';
+	public const POST = 'POST';
+	public const PUT = 'PUT';
+	public const DELETE = 'DELETE';
 		
 	protected $action;
 	protected $method;
@@ -22,37 +22,38 @@ class Request {
 	 */
 	function __construct($action, $method) {
 		if (!is_string($action)) {
-			throw new InvalidArgumentException('action must be a string: ' . $action);
+			throw new InvalidArgumentException('action must be a string: ' .$action);
 		}
 		if (!is_string($method)) {
 			throw new InvalidArgumentException('method must be a string: ' . $method);
 		}
-		$method = strtoupper($method);
-		$this->validateMethod($method);
 		
 		$this->action = $action;
-		$this->method = $method;
+		$this->method = strtoupper($method);
+		
+		$this->getData();
 	}
 	
+	/**
+	 * @return the request action
+	 */
 	public function getAction() {
 		return $this->action;
 	}
 	
+	/**
+	 * @return the request method
+	 */
 	public function getMethod() {
 		return $this->method;
 	}
 	
-	/**
-	 * Checks if the method is a get, post, put or delete method.
-	 * 
-	 * @param  string $method
-	 * @return whether the method is valid
-	 */
-	private function validateMethod($method) {
-		return 
-		$method !== self::$get &&
-		$method !== self::$post &&
-		$method !== self::$put &&
-		$method !== self::$delete;
+	protected function getData() {
+		if ($this->method === self::POST) {
+			foreach ($_POST as $key => $value) {
+				$this->$key = $value;
+			}
+		}
 	}
+	
 }

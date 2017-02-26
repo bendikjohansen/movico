@@ -16,15 +16,13 @@ class View {
 		if (is_null($data)) {
 			$data = [];
 		}
-		if (request_method() === Request::$post) {
-			$data = array_merge($_POST, $data);
-		}
 		if (is_array($data)) {
 			foreach ($data as $key => $value) {
 				$$key = $value;
 			}
 		}
 		
+		unset($data);
 		return require _public('views/' . $filename . '.view.php');
 	}
 }

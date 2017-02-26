@@ -7,63 +7,71 @@
 class ProcessRequest {
 	
 	/**
-	 * Processes the request. Firstly, it handles maintenance, and finally
-	 * it handles rest of the request.
+	 * Handles the request.
 	 * 
-	 * @param  Request $request 
-	 * @param  Router  $routes  
+	 * @param  Request $request
+	 * @param  Router  $routes
 	 */
 	public static function handle(Request $request, Router $routes) {
-		$action = $request->getAction();
-		$route_exists = $routes->has($action, $request->getMethod());
 		
-		// Handles maintenance
 		if (under_maintenance()) {
-			$maintenance = get_special_path('maintenance');
-			if ($maintenance !== $action) {
-				die (ProcessRequest::handle(new Request($maintenance, Request::$get), $routes));
-			}
-		} else {
-			if ($action === get_special_path('maintenance')) {
-				$route_exists = false;
-			}
+			// Direct to maintenance
+			return view('maintenance');
 		}
 		
-		// Handles request
-		if ($route_exists) {
-			$controller_name = explode('@', $routes->getPath($action, $request->getMethod()))[0];
-			$method_name = explode('@', $routes->getPath($action, $request->getMethod()))[1];
-			
-			ProcessRequest::direct($controller_name, $method_name);
+		if ($routes->has($request->getAction())) {
+			// Direct as planned		
+			self::direct($request, $routes);
 		} else {
-			$notfound = get_special_path('404');
-			die(ProcessRequest::handle(new Request($notfound, Request::$get), $routes));
+			// Direct to 404
+			return view('404');
 		}
+		
 	}
 	
-	protected static function direct($controller_name, $method_name) {
-		if (($controller = ProcessRequest::getController($controller_name)) !== null) {
+	protected static function direct(Request $request, Router $routes) {
+		$request_action = $request->getAction();
+		$request_method = $request->getMethod();
+		
+		$callback = $routes->getCallback($request_action, $request_method);
+		
+		if (is_callable($callback)) {
+			$reflection = new ReflectionFunction($callback);
 			
-			if (method_exists($controller, $method_name)) {
-				die($controller->$method_name());
+			if ($reflection->getNumberOfParameters() === 0) {
+				$callback();
 			} else {
-				die ('Could not find method ' . $method_name . ' in Controller ' . $controller_name);
+				$callback($request);
 			}
+			
 		} else {
-			die ('could not find controller: ' . $controller_name);
+			$callback = explode('@', $callback);
+			
+			$controller = self::findController($callback[0]);
+			$method = $callback[1];
+			
+			if (method_exists($controller, $method)) {
+				$controller->$method();
+			}
+			
 		}
+		
 	}
 	
-	protected static function getController($controller_name) {
+	protected static function findController($controller) {
 		global $config;
-		$controller_file = $config['directory paths']['controllers'] . $controller_name . '.php';
+		$controller_dir = $config['directories']['controllers'];
+		
+		$controller_file = $controller_dir . $controller . '.php';
+		
 		if (file_exists($controller_file)) {
 			require $controller_file;
 			
-			if (class_exists($controller_name)) {
-				return new $controller_name;
+			if (class_exists($controller)) {
+				return new $controller;
 			}
 		}
+		
 		return null;
 	}
 	

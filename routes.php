@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Bind urls to controllers in this file.
+ * Bind URIs to controllers in this file.
  */
 
 $routes = new Router;
@@ -9,7 +9,8 @@ $routes = new Router;
 $routes->get('/', 'HomeController@home');
 
 /**
- * Routes underneath are considered special and should always have a controller-method.
+ * Routes underneath are considered special and 
+ * should always have a callback.
  */
 
 $routes->get([

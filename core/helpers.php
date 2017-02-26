@@ -21,11 +21,10 @@ function get_special_path($path) {
  */
 function _public($path) {
 	global $config;
-	return $config['directory paths']['public'] . $path;
+	return $config['directories']['public'] . $path;
 }
 
 /**
- * 
  * @return whether the site is under maintenance
  */
 function under_maintenance() {
@@ -66,5 +65,5 @@ function vd($data) {
  * Shorthand of the View::GET method.
  */
 function view($filename, $data = null) {
-	return View::get($filename, $data);
+	View::get($filename, $data);
 }

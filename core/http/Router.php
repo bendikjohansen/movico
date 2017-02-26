@@ -13,80 +13,85 @@ class Router {
 		'DELETE' => []
 	];
 	
-	public function get($request, $path = null) {
-		$this->bind($request, $path, 'GET');
+	/**
+	 * Defines a callback for the given URI as a GET request.
+	 * 
+	 * @param  String $uri
+	 * @param  String $callback
+	 */
+	public function get($uri, $callback = null) {
+		$this->define($uri, $callback, 'GET');
 	}
 	
-	public function post($request, $path = null) {
-		$this->bind($request, $path, 'POST');
+	/**
+	 * Defines a callback for the given URI as a POST request.
+	 * 
+	 * @param  String $uri
+	 * @param  String $callback
+	 */
+	public function post($uri, $callback = null) {
+		$this->define($uri, $callback, 'POST');
 	}
 
-	public function put($request, $path = null) {
-		$this->bind($request, $path, 'PUT');
+	/**
+	 * Defines a callback for the given URI as a PUT request.
+	 * 
+	 * @param  String $uri
+	 * @param  String $callback
+	 */
+	public function put($uri, $callback = null) {
+		$this->define($uri, $callback, 'PUT');
 	}
 	
-	public function delete($request, $path = null) {
-		$this->bind($request, $path, 'DELETE');
+	/**
+	 * Defines a callback for the given URI as a DELETE request.
+	 * 
+	 * @param  String $uri
+	 * @param  String $callback
+	 */
+	public function delete($uri, $callback = null) {
+		$this->define($uri, $callback, 'DELETE');
 	}
 	
-	protected function bind($request, $path, $method) {
-		if (is_null($path)) {
-			if (is_array($request)) {
-				$this->defineMany($request, $method);
+	protected function define($uri, $callback, $method) {
+		if (is_null($callback)) {
+			if (is_array($uri)) {
+				$this->defineMany($uri, $method);
 			}
 		} else {
-			$this->define($request, $path, $method);
+			$this->bind($uri, $callback, $method);
 		}
 	}
 	
-	/**
-	 * A method for defining all routes at once.
-	 * 
-	 * @param associative array
-	 */
 	protected function defineMany($routes, $method = 'GET') {
-		if (!is_array($routes)) {
-			throw new InvalidArgumentException('routes was not an array: ' . vd($routes));
-		}
-		foreach ($routes as $request => $path) {
-			$this->define($request, $path, $method);
+		foreach ($routes as $uri => $callback) {
+			$this->define($uri, $callback, $method);
 		}
 	}
 	
-	/**
-	 * A method for binding a specific request to the given path.
-	 * 
-	 * @param  String
-	 * @param  String
-	 */
-	protected function define($request, $path, $method) {
-		if (!is_string($request)) {
-			throw new InvalidArgumentException('request is not a string: ' . $request);
-		}
-		if (!is_string($path)) {
-			throw new InvalidArgumentException('path is not a string: ' . $path);
+	protected function bind($uri, $callback, $method) {
+		if (!is_string($uri)) {
+			throw new InvalidArgumentException('uri is not a string: ' . $uri);
 		}
 		
-		$this->routes[$method][$request] = $path;
+		$this->routes[$method][$uri] = $callback;
 	}
 	
 	/**
-	 * Check whether the given url is binded to a path.
+	 * Check whether the given URI is bound to a callback.
 	 * 
 	 * @param String
-	 * @return whether the url is binded to a path.
+	 * @return whether the URI is binded to a callback.
 	 */
-	public function has($request, $method = 'GET') {
-		return array_key_exists($request, $this->routes[$method]);
+	public function has($uri, $method = 'GET') {
+		return array_key_exists($uri, $this->routes[$method]);
 	}
 	
 	/**
-	 * Finds route associated with request.
-	 * 
-	 * @return path binded to request.
+	 * @return callback bound to URI.
 	 */
-	public function getPath($request, $method = 'GET') {
-		return $this->routes[$method][$request];
+	public function getCallback($uri, $method = 'GET') {
+		return $this->routes[$method][$uri];
 	}
 	
 }

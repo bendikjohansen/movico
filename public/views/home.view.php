@@ -28,9 +28,7 @@
 <body>
 	
 	<main class="center">
-		<h1 class="title">
-			<?= $title ?>
-		</h1>
+		<h1 class="title"><?= $title ?></h1>
 	</main>
 	
 </body>

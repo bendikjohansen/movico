@@ -7,11 +7,14 @@ class HomeController extends Controller {
 	}
 	
 	public function notFound() {
-		return view('404', ['title' => '404: Site not found']);
+		return view('404');
 	}
 	
 	public function maintenance() {
-		return view('maintenance', ['title' => 'Site under maintenance...']);
+		if (under_maintenance())
+			return view('maintenance');
+		
+		return view('404');
 	}
 	
 }

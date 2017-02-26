@@ -6,7 +6,7 @@
 
 return [
 	
-	'directory paths' => [
+	'directories' => [
 		'controllers' => __DIR__ . '/../controllers/',
 		'public' => __DIR__ . '/../public/'
 	],
