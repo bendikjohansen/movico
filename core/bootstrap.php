@@ -9,11 +9,12 @@ $config = require 'config.php';
 
 require 'helpers.php';
 
-require 'Request.php';
-require 'Router.php';
+require 'http/Router.php';
 require '../routes.php';
 
-require 'View.php';
-require 'Controller.php';
+require 'http/View.php';
+require 'http/Controller.php';
 
-require 'ProcessRequest.php';
+require 'http/Request.php';
+
+require 'http/ProcessRequest.php';
