@@ -6,16 +6,13 @@
 
 $routes = new Router;
 
-$routes->defineMany([
-	'/' => 'HomeController@home',
-]);
+$routes->get('/', 'HomeController@home');
 
 /**
  * Routes underneath are considered special and should always have a controller-method.
  */
-$sp = $config['special paths'];
 
-$routes->define($sp['404'], 'HomeController@notFound');
-$routes->define($sp['maintenance'], 'HomeController@maintenance');
-
-unset($sp);
+$routes->get([
+	$config['special paths']['404'] => 'HomeController@notFound',
+	$config['special paths']['maintenance'] => 'HomeController@maintenance'
+]);

@@ -31,8 +31,8 @@ class ProcessRequest {
 		
 		// Handles request
 		if ($route_exists) {
-			$controller_name = explode('@', $routes->get($action, $request->getMethod()))[0];
-			$method_name = explode('@', $routes->get($action, $request->getMethod()))[1];
+			$controller_name = explode('@', $routes->getPath($action, $request->getMethod()))[0];
+			$method_name = explode('@', $routes->getPath($action, $request->getMethod()))[1];
 			
 			ProcessRequest::direct($controller_name, $method_name);
 		} else {
