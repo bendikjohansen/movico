@@ -1,8 +1,7 @@
 <?php
 
 /**
-* Bootstraps the project, loading all necessary files.
-* If a file should be loaded, append the require function to this file.
+* Bootstraps the project by loading all necessary files.
 */
 
 $config = require 'config.php';
@@ -17,4 +16,4 @@ require 'http/Controller.php';
 
 require 'http/Request.php';
 
-require 'http/ProcessRequest.php';
+require 'http/RequestProcessor.php';

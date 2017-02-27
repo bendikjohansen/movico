@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Configuration file for the project.
+ * Configuration file for the framework.
  */
 
 return [
@@ -13,11 +13,6 @@ return [
 	
 	'maintenance' => [
 		'active' => false
-	],
-	
-	'special paths' => [
-		'404' => '/404',
-		'maintenance' => '/maintenance'
 	]
 
 ];

@@ -1,17 +1,8 @@
 <?php
 
 /**
- * All of the helper functions in the project. Some may be a short-hand way of
- * writing the code, others may be a safer way.
+ * All of the helper functions in the framework.
  */
-
-/**
- * Gets the URI for the given, special path.
- */
-function get_special_path($path) {
-	global $config;
-	return $config['special paths'][$path];
-}
 
 /**
  * Prepends the path to the public folder.
@@ -27,7 +18,7 @@ function _public($path) {
 /**
  * @return whether the site is under maintenance
  */
-function under_maintenance() {
+function underMaintenance() {
 	global $config;
 	return $config['maintenance']['active'];
 }
@@ -46,7 +37,7 @@ function uri() {
  * 
  * @return String
  */
-function request_method() {
+function requestMethod() {
 	return $_SERVER['REQUEST_METHOD'];
 }
 
@@ -65,5 +56,5 @@ function vd($data) {
  * Shorthand of the View::GET method.
  */
 function view($filename, $data = null) {
-	View::get($filename, $data);
+	return View::get($filename, $data);
 }

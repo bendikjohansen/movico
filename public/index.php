@@ -1,9 +1,9 @@
 <?php
 
 /**
- * The entry point of the whole project.
+ * The entry point of the whole framework.
  */
 
 require __DIR__ . '/../core/bootstrap.php';
 
-ProcessRequest::handle(new Request(uri(), request_method()), $routes);
+RequestProcessor::handle(new Request(uri(), requestMethod()), $routes);

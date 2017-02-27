@@ -4,7 +4,7 @@
  * ProcessRequest processes each request and addresses them accordingly.
  */
 
-class ProcessRequest {
+class RequestProcessor {
 	
 	/**
 	 * Handles the request.
@@ -14,12 +14,10 @@ class ProcessRequest {
 	 */
 	public static function handle(Request $request, Router $routes) {
 		
-		if (under_maintenance()) {
+		if (underMaintenance()) {
 			// Direct to maintenance
 			return view('maintenance');
-		}
-		
-		if ($routes->has($request->getAction())) {
+		} else if ($routes->has($request->getAction())) {
 			// Direct as planned		
 			self::direct($request, $routes);
 		} else {
@@ -30,15 +28,15 @@ class ProcessRequest {
 	}
 	
 	protected static function direct(Request $request, Router $routes) {
-		$request_action = $request->getAction();
-		$request_method = $request->getMethod();
+		$requestAction = $request->getAction();
+		$requestMethod = $request->getMethod();
 		
-		$callback = $routes->getCallback($request_action, $request_method);
+		$callback = $routes->getCallback($requestAction, $requestMethod);
 		
 		if (is_callable($callback)) {
-			$reflection = new ReflectionFunction($callback);
+			$reflector = new ReflectionFunction($callback);
 			
-			if ($reflection->getNumberOfParameters() === 0) {
+			if ($reflector->getNumberOfParameters() === 0) {
 				$callback();
 			} else {
 				$callback($request);
@@ -51,7 +49,13 @@ class ProcessRequest {
 			$method = $callback[1];
 			
 			if (method_exists($controller, $method)) {
-				$controller->$method();
+				$reflector = new ReflectionMethod($controller, $method);
+				
+				if ($reflector->getNumberOfParameters() === 0) {
+					$controller->$method();	
+				} else {
+					$controller->$method($request);
+				}
 			}
 			
 		}

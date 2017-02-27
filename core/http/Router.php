@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The router class is used to define where the semantic URLs should point. 
+ * The Router class is used to register web routes.
  */
 
 class Router {

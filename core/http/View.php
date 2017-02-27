@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This class handles the file of which data is rendered on.
+ * The View class handles the file of which data is rendered on.
  */
 
 class View {

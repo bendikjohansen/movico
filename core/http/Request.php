@@ -22,10 +22,12 @@ class Request {
 	 */
 	function __construct($action, $method) {
 		if (!is_string($action)) {
-			throw new InvalidArgumentException('action must be a string: ' .$action);
+			$error_string = 'action must be a string: ' .$action;
+			throw new InvalidArgumentException($error_string);
 		}
 		if (!is_string($method)) {
-			throw new InvalidArgumentException('method must be a string: ' . $method);
+			$error_string = 'method must be a string: ' . $method;
+			throw new InvalidArgumentException($error_string);
 		}
 		
 		$this->action = $action;
