@@ -71,7 +71,8 @@ class Router {
 	
 	protected function bind($uri, $callback, $method) {
 		if (!is_string($uri)) {
-			throw new InvalidArgumentException('uri is not a string: ' . $uri);
+			$error = 'uri is not a string: ' . $uri;
+			throw new InvalidArgumentException($error);
 		}
 		
 		$this->routes[$method][$uri] = $callback;
@@ -84,14 +85,88 @@ class Router {
 	 * @return whether the URI is binded to a callback.
 	 */
 	public function has($uri, $method = 'GET') {
-		return array_key_exists($uri, $this->routes[$method]);
+		foreach (array_keys($this->routes[$method]) as $route) {
+			if ($this->matchUri($uri, $route)) {
+				$this->currentRoute = $route;
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
 	 * @return callback bound to URI.
 	 */
-	public function getCallback($uri, $method = 'GET') {
-		return $this->routes[$method][$uri];
+	public function prepareCallback(Request $request) {
+		$requestMethod = $request->getMethod();
+		$route = $this->currentRoute;
+		return $this->routes[$requestMethod][$route];
 	}
 	
+	protected function matchUri($uri, $route) {
+		$uri = trim($uri, '/');
+		$route = trim($route, '/');
+		
+		$uriSize = sizeof(explode('/', $uri));
+		$routeSize = sizeof(explode('/', $route));
+		if ($uriSize !== $routeSize) {
+			return false;
+		}
+		if ($uri === $route) {
+			return true;
+		}
+		if (!is_null($uriSize)) {
+			if (!stringContains($route, '{', '}')) {
+				if ($uri !== $route) {
+					return false;
+				}
+			}
+		}
+		$match = true;
+		$this->iterateUriParts($uri, $route,
+		function($uriPart, $routePart) use(&$match) {
+			if (!stringContains($routePart, '{', '}')) {
+				if ($uriPart !== $routePart) {
+					$match = false;
+				}
+			}
+		});
+		
+		return $match;
+	}
+	
+	/**
+	 * Gets any variables in the URL
+	 * @param  string $uri   
+	 * @param  string $route 
+	 * @return associative array        keys and values for the variables
+	 */
+	public function getUriVariables($uri, $route) {
+		$values = [];
+		
+		$this->iterateUriParts($uri, $route,
+		function($uriPart, $routePart) use(&$values) {
+			if (stringContains($routePart, '{', '}')) {
+				$end = strlen($routePart) - 2;
+				$key = substr($routePart, 1, $end);
+				
+				$values[$key] = $uriPart;
+			}
+		});
+		
+		return $values;
+	}
+	
+	protected function iterateUriParts($uri, $route, $callback) {
+		$uri = trim($uri, '/');
+		$route = trim($route, '/');
+		$uriParts = explode('/', $uri);
+		$routeParts = explode('/', $route);
+		$uriSize = sizeof($uriParts);
+		$routeSize = sizeof($routeParts);
+		
+		for ($i = 0; $i < min($uriSize, $routeSize); $i++) {
+			$callback($uriParts[$i], $routeParts[$i]);
+		}
+	}
 }

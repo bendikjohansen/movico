@@ -30,8 +30,13 @@ class RequestProcessor {
 	protected static function direct(Request $request, Router $routes) {
 		$requestAction = $request->getAction();
 		$requestMethod = $request->getMethod();
+		$currentRoute = $routes->currentRoute;
 		
-		$callback = $routes->getCallback($requestAction, $requestMethod);
+		$callback = $routes->prepareCallback($request);
+		$variables = $routes->getUriVariables($requestAction, $currentRoute);
+		foreach ($variables as $key => $value) {
+			$request->$key = $value;
+		}
 		
 		if (is_callable($callback)) {
 			$reflector = new ReflectionFunction($callback);

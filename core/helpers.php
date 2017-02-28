@@ -5,14 +5,31 @@
  */
 
 /**
- * Prepends the path to the public folder.
+ * Prepends the given path to the public folder.
  * 
  * @param  String
- * @return path to the public folder.
+ * @return path from the public folder.
  */
 function _public($path) {
 	global $config;
 	return $config['directories']['public'] . $path;
+}
+
+
+/**
+ * Checks whether the string has the given substrings.
+ * @param  string $haystack the string to search
+ * @param  string $needles  the strings to look for
+ * @return boolean			whether the string has the given substrings
+ */
+function stringContains($haystack, ...$needles) {
+	foreach ($needles as $needle) {
+		if (strpos($haystack, $needle) === false) {
+			return false;
+		}
+	}
+	
+	return true;
 }
 
 /**
