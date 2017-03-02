@@ -1,9 +1,9 @@
 <?php
 
 /**
- * The base controller class.
+ * The base Controller class.
  */
 
-class Controller {
+abstract class Controller {
 	
 }

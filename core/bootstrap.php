@@ -8,8 +8,13 @@ $config = require 'config.php';
 
 require 'helpers.php';
 
+require 'database/Connection.php';
+require 'database/DB.php';
+require 'database/Model.php';
+require __DIR__ . '/../database/models.php';
+
 require 'http/Router.php';
-require '../routes.php';
+require __DIR__ . '/../routes.php';
 
 require 'http/View.php';
 require 'http/Controller.php';
