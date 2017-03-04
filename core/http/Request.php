@@ -31,7 +31,7 @@ class Request {
 		}
 		
 		$this->action = $action;
-		$this->method = strtoupper($method);
+		$this->method = rawurldecode(strtoupper($method));
 		
 		$this->getData();
 	}

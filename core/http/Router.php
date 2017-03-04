@@ -150,7 +150,7 @@ class Router {
 				$end = strlen($routePart) - 2;
 				$key = substr($routePart, 1, $end);
 				
-				$values[$key] = $uriPart;
+				$values[$key] = urldecode($uriPart);
 			}
 		});
 		

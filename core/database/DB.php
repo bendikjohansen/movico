@@ -61,7 +61,7 @@ class DB {
 	 * @return array a row of data from the database.
 	 */
 	public function get() {
-		$statement = $this->executeStatement(self::$query);
+		$statement = $this->execute();
 		return $statement->fetch(PDO::FETCH_ASSOC);
 	}
 	
@@ -71,11 +71,16 @@ class DB {
 	 * @return array rows of data from the database
 	 */
 	public function all() {
-		$statement = $this->executeStatement(self::$query);
+		$statement = $this->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 	
-	protected function executeStatement($query) {
+	/**
+	 * Executes the query.
+	 * 
+	 * @return mixed
+	 */
+	public function execute() {
 		$pdo = Connection::make();
 		$statement = $pdo->prepare(self::$query);
 		$statement->execute();
