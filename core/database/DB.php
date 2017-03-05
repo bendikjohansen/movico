@@ -9,9 +9,9 @@ class DB {
 	 * Builds a query to be executed.
 	 * 
 	 * @param  string $query a sql query
-	 * @return DB          self
+	 * @return DB
 	 */
-	public static function query($query) {
+	public static function query(string $query) : DB {
 		if (self::$instance === null) {
 			self::$instance = new self;
 		}
@@ -23,9 +23,9 @@ class DB {
 	 * Selects the given columns.
 	 * 
 	 * @param  array $columns name of the columns in the database table
-	 * @return DB          self
+	 * @return DB
 	 */
-	public static function select(...$columns) {
+	public static function select(string ...$columns) : DB {
 		if (self::$instance === null) {
 			self::$instance = new self;
 		}
@@ -37,9 +37,9 @@ class DB {
 	 * Selects columns from the given table.
 	 * 
 	 * @param  string $table name of the table in the database
-	 * @return DB        self
+	 * @return DB
 	 */
-	public function from($table) {
+	public function from(string $table) : DB {
 		self::$query .= ' FROM ' . $table;
 		return $this;
 	}
@@ -48,10 +48,53 @@ class DB {
 	 * Adds a condition to the query.
 	 * 
 	 * @param   $condition string
-	 * @return DB            self
+	 * @return DB
 	 */
-	public function where($condition) {
+	public function where(string $condition) : DB {
 		self::$query .= ' WHERE ' . $condition;
+		return $this;
+	}
+	
+	/**
+	 * Continues a condition, requiring the given condition to be true.
+	 * 
+	 * @param  string $condition 
+	 * @return DB
+	 */
+	public function and(string $condition) : DB {
+		self::$query .= ' AND ' . $condition;
+		return $this;
+	}
+	
+	/**
+	 * Continues a condition, requiring either 
+	 * ones of the conditions to be true.
+	 * 
+	 * @param  string $condition
+	 * @return DB
+	 */
+	public function or(string $condition) : DB {
+		self::$query .= ' OR ' . $condition;
+		return $this;
+	}
+	
+	/**
+	 * Sort the output of the statement.
+	 * 
+	 * @param  string $column
+	 * @return DB
+	 */
+	public function orderBy(string $column) : DB {
+		self::$query .= ' ORDER BY ' . $condition;
+		return $this;
+	}
+	
+	/**
+	 * Sorts by descending instead of ascending.
+	 * @return DB
+	 */
+	public function desc() : DB {
+		self::$query .= ' DESC';
 		return $this;
 	}
 	
@@ -60,7 +103,7 @@ class DB {
 	 * 
 	 * @return array a row of data from the database.
 	 */
-	public function get() {
+	public function get() : array {
 		$statement = $this->execute();
 		return $statement->fetch(PDO::FETCH_ASSOC);
 	}
@@ -70,7 +113,7 @@ class DB {
 	 * 
 	 * @return array rows of data from the database
 	 */
-	public function all() {
+	public function all() : array {
 		$statement = $this->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}

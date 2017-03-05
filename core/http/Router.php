@@ -17,9 +17,9 @@ class Router {
 	 * Defines a callback for the given URI as a GET request.
 	 * 
 	 * @param  String $uri
-	 * @param  String $callback
+	 * @param mixed  $callback
 	 */
-	public function get($uri, $callback = null) {
+	public function get(string $uri, $callback = null) {
 		$this->define($uri, $callback, 'GET');
 	}
 	
@@ -27,9 +27,9 @@ class Router {
 	 * Defines a callback for the given URI as a POST request.
 	 * 
 	 * @param  String $uri
-	 * @param  String $callback
+	 * @param mixed  $callback
 	 */
-	public function post($uri, $callback = null) {
+	public function post(string $uri, $callback = null) {
 		$this->define($uri, $callback, 'POST');
 	}
 
@@ -37,9 +37,9 @@ class Router {
 	 * Defines a callback for the given URI as a PUT request.
 	 * 
 	 * @param  String $uri
-	 * @param  String $callback
+	 * @param mixed  $callback
 	 */
-	public function put($uri, $callback = null) {
+	public function put(string $uri, $callback = null) {
 		$this->define($uri, $callback, 'PUT');
 	}
 	
@@ -47,9 +47,9 @@ class Router {
 	 * Defines a callback for the given URI as a DELETE request.
 	 * 
 	 * @param  String $uri
-	 * @param  String $callback
+	 * @param mixed  $callback
 	 */
-	public function delete($uri, $callback = null) {
+	public function delete(string $uri, $callback = null) {
 		$this->define($uri, $callback, 'DELETE');
 	}
 	
@@ -69,12 +69,7 @@ class Router {
 		}
 	}
 	
-	protected function bind($uri, $callback, $method) {
-		if (!is_string($uri)) {
-			$error = 'uri is not a string: ' . $uri;
-			throw new InvalidArgumentException($error);
-		}
-		
+	protected function bind(string $uri, $callback, string $method) {
 		$this->routes[$method][$uri] = $callback;
 	}
 	
@@ -103,7 +98,7 @@ class Router {
 		return $this->routes[$requestMethod][$route];
 	}
 	
-	protected function matchUri($uri, $route) {
+	protected function matchUri(string $uri, string $route) {
 		$uri = trim($uri, '/');
 		$route = trim($route, '/');
 		
@@ -141,7 +136,7 @@ class Router {
 	 * @param  string $route 
 	 * @return associative array        keys and values for the variables
 	 */
-	public function getUriVariables($uri, $route) {
+	public function getUriVariables(string $uri, string $route) : array {
 		$values = [];
 		
 		$this->iterateUriParts($uri, $route,
@@ -157,7 +152,7 @@ class Router {
 		return $values;
 	}
 	
-	protected function iterateUriParts($uri, $route, $callback) {
+	protected function iterateUriParts(string $uri, string $route, $callback) {
 		$uri = trim($uri, '/');
 		$route = trim($route, '/');
 		$uriParts = explode('/', $uri);

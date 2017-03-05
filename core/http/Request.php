@@ -20,16 +20,7 @@ class Request {
 	 * @param String $action 
 	 * @param String $method
 	 */
-	function __construct($action, $method) {
-		if (!is_string($action)) {
-			$error_string = 'action must be a string: ' .$action;
-			throw new InvalidArgumentException($error_string);
-		}
-		if (!is_string($method)) {
-			$error_string = 'method must be a string: ' . $method;
-			throw new InvalidArgumentException($error_string);
-		}
-		
+	function __construct(string $action, string $method) {
 		$this->action = $action;
 		$this->method = rawurldecode(strtoupper($method));
 		
@@ -39,14 +30,14 @@ class Request {
 	/**
 	 * @return the request action
 	 */
-	public function getAction() {
+	public function getAction() : string {
 		return $this->action;
 	}
 	
 	/**
 	 * @return the request method
 	 */
-	public function getMethod() {
+	public function getMethod() : string {
 		return $this->method;
 	}
 	

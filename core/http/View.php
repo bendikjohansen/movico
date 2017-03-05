@@ -12,10 +12,8 @@ class View {
 	 * @param String
 	 * @param associative array
 	 */
-	public static function get($filename, $data) {
-		if (is_null($data)) {
-			$data = [];
-		}
+	public static function get(string $filename, array $data) {
+		$data = $data ?? [];
 		if (is_array($data)) {
 			foreach ($data as $key => $value) {
 				$$key = $value;

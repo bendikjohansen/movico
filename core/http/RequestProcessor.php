@@ -67,7 +67,7 @@ class RequestProcessor {
 		
 	}
 	
-	protected static function findController($controller) {
+	protected static function findController(string $controller) {
 		global $config;
 		$controller_dir = $config['directories']['controllers'];
 		

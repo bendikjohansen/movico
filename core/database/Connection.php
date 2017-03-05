@@ -6,7 +6,12 @@
 
 class Connection {
 	
-	public static function make() {
+	/**
+	 * Returns an instance of PDO connected to the database.
+	 * 
+	 * @return PDO 
+	 */
+	public static function make() : PDO {
 		$db = Connection::getInfo();
 		
 		$pdo = new PDO(
@@ -22,7 +27,7 @@ class Connection {
 		return $pdo;
 	}
 	
-	protected static function getInfo() {
+	protected static function getInfo() : array {
 		$dbInfo = parse_ini_file(__DIR__ . '/../../env.ini', true)['database'];
 		return $dbInfo;
 	}
