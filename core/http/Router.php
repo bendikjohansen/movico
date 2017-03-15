@@ -16,56 +16,50 @@ class Router {
 	/**
 	 * Defines a callback for the given URI as a GET request.
 	 * 
-	 * @param  String $uri
-	 * @param mixed  $callback
+	 * @param mixed $uri
+	 * @param mixed $callback
 	 */
-	public function get(string $uri, $callback = null) {
+	public function get($uri, $callback = null) {
 		$this->define($uri, $callback, 'GET');
 	}
 	
 	/**
 	 * Defines a callback for the given URI as a POST request.
 	 * 
-	 * @param  String $uri
-	 * @param mixed  $callback
+	 * @param mixed $uri
+	 * @param mixed $callback
 	 */
-	public function post(string $uri, $callback = null) {
+	public function post($uri, $callback = null) {
 		$this->define($uri, $callback, 'POST');
 	}
 
 	/**
 	 * Defines a callback for the given URI as a PUT request.
 	 * 
-	 * @param  String $uri
-	 * @param mixed  $callback
+	 * @param mixed $uri
+	 * @param mixed $callback
 	 */
-	public function put(string $uri, $callback = null) {
+	public function put($uri, $callback = null) {
 		$this->define($uri, $callback, 'PUT');
 	}
 	
 	/**
 	 * Defines a callback for the given URI as a DELETE request.
 	 * 
-	 * @param  String $uri
-	 * @param mixed  $callback
+	 * @param mixed $uri
+	 * @param mixed $callback
 	 */
-	public function delete(string $uri, $callback = null) {
+	public function delete($uri, $callback = null) {
 		$this->define($uri, $callback, 'DELETE');
 	}
 	
 	protected function define($uri, $callback, $method) {
-		if (is_null($callback)) {
-			if (is_array($uri)) {
-				$this->defineMany($uri, $method);
+		if (is_null($callback) && is_array($uri)) {
+			foreach ($uri as $key => $callback) {
+				$this->bind($key, $callback, $method);
 			}
 		} else {
 			$this->bind($uri, $callback, $method);
-		}
-	}
-	
-	protected function defineMany($routes, $method = 'GET') {
-		foreach ($routes as $uri => $callback) {
-			$this->define($uri, $callback, $method);
 		}
 	}
 	
