@@ -8,7 +8,8 @@ return [
 	
 	'directories' => [
 		'controllers' => __DIR__ . '/../controllers/',
-		'public' => __DIR__ . '/../public/'
+		'public' => __DIR__ . '/../public/',
+		'views' => __DIR__ . '/../views/'
 	],
 	
 	'maintenance' => [

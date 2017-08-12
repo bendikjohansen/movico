@@ -5,7 +5,7 @@
  */
 
 /**
- * Prepends the given path to the public folder.
+ * Prepends the given path to the public folder path.
  * 
  * @param  string
  * @return path from the public folder.
@@ -15,6 +15,16 @@ function _public(string $path) : string {
 	return $config['directories']['public'] . $path;
 }
 
+/**
+ * Prepends the given path to the views folder path.
+ *
+ * @param  string
+ * @return path from the views folder.
+ */
+function _view(string $path) : string {
+	global $config;
+	return $config['directories']['views'] . $path;
+}
 
 /**
  * Checks whether the string has the given substrings.

@@ -3,3 +3,4 @@
 
 # movico
 env.ini
+database/*.sqlite
